@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es" class="light dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Modificar - PWA con Crud</title>
+
+    <meta name="description" content="Modificar pasatiempo" />
+
+    <!-- PWA -->
+    <script type="module" src="js/lib/registraServiceWorker.js"></script>
+    <script type="module" src="js/lib/manejaErrores.js"></script>
+
+    <meta name="theme-color" content="#fffbfe" />
+    <link rel="icon" sizes="32x32" href="favicon.ico" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- Polyfill -->
+    <script src="ungap/custom-elements.js"></script>
+
+    <!-- Componentes -->
+    <script type="module" src="js/lib/custom/md-app-bar.js"></script>
+    <script type="module" src="js/nav-tab-fixed.js"></script>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/transicion_pestanas.css" />
+    <link rel="stylesheet" href="css/md-tab.css" />
+    <link rel="stylesheet" href="css/material-symbols-outlined.css" />
+    <link rel="stylesheet" href="css/md-list.css" />
+  </head>
+
+  <body>
+    <md-app-bar class="centered" adicional="tab">
+      <h1>Modificar</h1>
+    </md-app-bar>
+
+    <nav-tab-fixed id="tab"></nav-tab-fixed>
+
+    <section>
+      <form id="formulario">
+        <ul class="md-list">
+          <li class="md-two-line">
+            <label class="headline">
+              Nombre *
+              <input name="nombre" value="Cargando…" />
+            </label>
+          </li>
+        </ul>
+
+        <p>* Obligatorio</p>
+
+        <p>
+          <button class="md-filled-button" type="submit">Guardar</button>
+
+          <button id="botonEliminar" class="md-outline-button" type="button">
+            Eliminar
+          </button>
+        </p>
+
+        <p>
+          <a href="index.html">Cancelar</a>
+        </p>
+      </form>
+    </section>
+
+    <script type="module">
+      import { validaEntidadObligatoria } from "./js/lib/validaEntidadObligatoria.js";
+
+      import { muestraObjeto } from "./js/lib/muestraObjeto.js";
+
+      import { pasatiempoBusca } from "./js/pasatiempoBusca.js";
+      import { pasatiempoElimina } from "./js/pasatiempoElimina.js";
+      import { pasatiempoModifica } from "./js/pasatiempoModifica.js";
+
+      const params = new URL(location.href).searchParams;
+      const id = params.get("id");
+
+      descargaDatos();
+
+      async function descargaDatos() {
+        if (id !== null && id !== "") {
+          let modelo = await pasatiempoBusca(id);
+
+          modelo = validaEntidadObligatoria("Pasatiempo", modelo);
+
+          muestraObjeto(document, {
+            nombre: { value: modelo.PAS_NOMBRE },
+          });
+
+          formulario.addEventListener("submit", (event) =>
+            pasatiempoModifica(event, id),
+          );
+
+          botonEliminar.addEventListener("click", () => pasatiempoElimina(id));
+        }
+      }
+    </script>
+  </body>
+</html>
