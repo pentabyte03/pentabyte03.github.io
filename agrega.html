@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es" class="light dark">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Agregar - PWA con Crud</title>
+
+    <meta name="description" content="Ejemplo de PWA con Formulario" />
+
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#fffbfe" />
+
+    <link rel="icon" sizes="32x32" href="favicon.ico" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <script type="module" src="js/lib/registraServiceWorker.js"></script>
+    <script type="module" src="js/lib/manejaErrores.js"></script>
+
+    <script src="ungap/custom-elements.js"></script>
+    <script type="module" src="js/lib/custom/md-app-bar.js"></script>
+
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/transicion_pestanas.css" />
+    <link rel="stylesheet" href="css/md-filled-text-field.css" />
+    <link rel="stylesheet" href="css/material-symbols-outlined.css" />
+    <link rel="stylesheet" href="css/md-standard-icon-button.css" />
+  </head>
+
+  <body>
+    <form id="formulario" novalidate>
+      <md-app-bar adicional="tab">
+        <a
+          class="md-standard-icon-button"
+          slot="navigation"
+          title="Cancelar"
+          href="index.html"
+        >
+          <span class="material-symbols-outlined">cancel</span>
+        </a>
+
+        <h1>Agregar</h1>
+
+        <button
+          type="submit"
+          class="md-standard-icon-button"
+          title="Guardar"
+          slot="action"
+        >
+          <span class="material-symbols-outlined">save</span>
+        </button>
+      </md-app-bar>
+
+      <section>
+        <p>
+          <label class="md-filled-text-field">
+            <input name="nombre" required placeholder="Nombre*" />
+
+            <span>Nombre *</span>
+
+            <small id="supportingNombre">Obligatorio</small>
+          </label>
+        </p>
+      </section>
+    </form>
+
+    <script type="module">
+      import { muestraTextoDeAyuda } from "./js/lib/muestraTextoDeAyuda.js";
+      import { pasatiempoAgrega } from "./js/pasatiempoAgrega.js";
+
+      formulario.nombre.addEventListener("input", copiaMensajes);
+
+      formulario.addEventListener("submit", pasatiempoAgrega);
+
+      function copiaMensajes() {
+        muestraTextoDeAyuda(formulario.nombre, supportingNombre, "Obligatorio");
+      }
+    </script>
+  </body>
+</html>
