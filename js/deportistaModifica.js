@@ -17,11 +17,15 @@ export async function deportistaModifica(event, id) {
   const formData = new FormData(target);
 
   const nombre = recibeTextoObligatorio(formData, "nombre");
+  const deporte = recibeTextoObligatorio(formData, "deporte");
+  const equipo = recibeTextoObligatorio(formData, "equipo");
 
   const anterior = await deportistaBusca(id);
 
   if (anterior !== undefined) {
     anterior.DEP_NOMBRE = nombre;
+    anterior.DEP_DEPORTE = deporte;
+    anterior.DEP_EQUIPO = equipo;
     anterior.DEP_MODIFICACION = Date.now();
 
     await bdEjecuta(Bd, [ALMACEN_DEPORTISTA], (transaccion) => {
