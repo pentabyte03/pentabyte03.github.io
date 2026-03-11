@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
 
-    <title>Agregar - PWA con Crud</title>
+    <title>Agregar Deportista</title>
 
-    <meta name="description" content="Ejemplo de PWA con Formulario" />
+    <meta name="description" content="Agregar deportista" />
 
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#fffbfe" />
@@ -38,7 +38,7 @@
           <span class="material-symbols-outlined">cancel</span>
         </a>
 
-        <h1>Agregar</h1>
+        <h1>Agregar Deportista</h1>
 
         <button
           type="submit"
@@ -51,6 +51,7 @@
       </md-app-bar>
 
       <section>
+        <!-- NOMBRE -->
         <p>
           <label class="md-filled-text-field">
             <input name="nombre" required placeholder="Nombre*" />
@@ -60,19 +61,49 @@
             <small id="supportingNombre">Obligatorio</small>
           </label>
         </p>
+
+        <!-- DEPORTE -->
+        <p>
+          <label class="md-filled-text-field">
+            <input name="deporte" required placeholder="Deporte*" />
+
+            <span>Deporte *</span>
+
+            <small id="supportingDeporte">Obligatorio</small>
+          </label>
+        </p>
+
+        <!-- EQUIPO -->
+        <p>
+          <label class="md-filled-text-field">
+            <input name="equipo" required placeholder="Equipo*" />
+
+            <span>Equipo *</span>
+
+            <small id="supportingEquipo">Obligatorio</small>
+          </label>
+        </p>
       </section>
     </form>
 
     <script type="module">
       import { muestraTextoDeAyuda } from "./js/lib/muestraTextoDeAyuda.js";
-      import { pasatiempoAgrega } from "./js/pasatiempoAgrega.js";
+      import { deportistaAgrega } from "./js/deportistaAgrega.js";
 
       formulario.nombre.addEventListener("input", copiaMensajes);
+      formulario.deporte.addEventListener("input", copiaMensajes);
+      formulario.equipo.addEventListener("input", copiaMensajes);
 
-      formulario.addEventListener("submit", pasatiempoAgrega);
+      formulario.addEventListener("submit", deportistaAgrega);
 
       function copiaMensajes() {
         muestraTextoDeAyuda(formulario.nombre, supportingNombre, "Obligatorio");
+        muestraTextoDeAyuda(
+          formulario.deporte,
+          supportingDeporte,
+          "Obligatorio",
+        );
+        muestraTextoDeAyuda(formulario.equipo, supportingEquipo, "Obligatorio");
       }
     </script>
   </body>

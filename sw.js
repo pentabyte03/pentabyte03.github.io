@@ -15,12 +15,12 @@
  * conoce como número menor y se cambia cuando se realizan
  * modificaciones menores.
  */
-const VERSION = "1.01";
+const VERSION = "2.00";
 
 /**
  * Nombre de la carpeta de caché.
  */
-const CACHE = "pwamd";
+const CACHE = "pwamd-1";
 
 /**
  * Archivos requeridos para que la aplicación funcione fuera de
@@ -80,20 +80,20 @@ const ARCHIVOS = [
 
   // JS APP
   "js/Bd.js",
+  "js/DEPORTISTA.js",
+  "js/deportistaAgrega.js",
+  "js/deportistaBusca.js",
+  "js/deportistaConsultaNoEliminados.js",
+  "js/deportistaConsultaTodos.js",
+  "js/deportistaElimina.js",
+  "js/deportistaModifica.js",
+  "js/deportistaReemplaza.js",
   "js/esperaUnPocoYSincroniza.js",
   "js/nav-tab-fixed.js",
-  "js/PASATIEMPO.js",
-  "js/pasatiempoAgrega.js",
-  "js/pasatiempoBusca.js",
-  "js/pasatiempoConsultaNoEliminados.js",
-  "js/pasatiempoConsultaTodos.js",
-  "js/pasatiempoElimina.js",
-  "js/pasatiempoModifica.js",
-  "js/pasatiemposReemplaza.js",
   "js/renderiza.js",
   "js/sincroniza.js",
-  "js/validaPasatiempo.js",
-  "js/validaPasatiempos.js",
+  "js/validaDeportista.js",
+  "js/validaDeportistas.js",
 
   // JS LIB
   "js/lib/bdConsulta.js",

@@ -36,7 +36,6 @@
     <md-app-bar class="centered" adicional="tab">
       <h1>PWA con Crud</h1>
     </md-app-bar>
-
     <nav-tab-fixed id="tab"></nav-tab-fixed>
 
     <section>
@@ -61,19 +60,19 @@
 
       import { esperaUnPocoYSincroniza } from "./js/esperaUnPocoYSincroniza.js";
 
-      import { pasatiempoConsultaNoEliminados } from "./js/pasatiempoConsultaNoEliminados.js";
+      import { deportistaConsultaNoEliminados } from "./js/deportistaConsultaNoEliminados.js";
 
       import { renderiza } from "./js/renderiza.js";
 
       import { sincroniza } from "./js/sincroniza.js";
 
-      pasatiempoVistaIndex();
+      deportistaVistaIndex();
 
-      export async function pasatiempoVistaIndex() {
+      export async function deportistaVistaIndex() {
         try {
-          const pasatiempos = await pasatiempoConsultaNoEliminados();
+          const deportistas = await deportistaConsultaNoEliminados();
 
-          renderiza(pasatiempos);
+          renderiza(deportistas);
 
           sincroniza();
         } catch (error) {

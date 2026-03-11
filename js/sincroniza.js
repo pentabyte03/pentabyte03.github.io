@@ -1,31 +1,30 @@
-import { pasatiempoConsultaTodos } from "./pasatiempoConsultaTodos.js"
-import { pasatiemposReemplaza } from "./pasatiemposReemplaza.js"
-import { esperaUnPocoYSincroniza } from "./esperaUnPocoYSincroniza.js"
-import { consume } from "./lib/consume.js"
-import { enviaJsonRecibeJson } from "./lib/enviaJsonRecibeJson.js"
-import { muestraError } from "./lib/muestraError.js"
-import { renderiza } from "./renderiza.js"
-import { validaPasatiempos } from "./validaPasatiempos.js"
+import { deportistaConsultaTodos } from "./deportistaConsultaTodos.js";
+import { deportistasReemplaza } from "./deportistaReemplaza.js";
+import { esperaUnPocoYSincroniza } from "./esperaUnPocoYSincroniza.js";
+import { consume } from "./lib/consume.js";
+import { enviaJsonRecibeJson } from "./lib/enviaJsonRecibeJson.js";
+import { muestraError } from "./lib/muestraError.js";
+import { renderiza } from "./renderiza.js";
+import { validaDeportistas } from "./validaDeportistas.js";
 
 export async function sincroniza() {
+  try {
+    if (navigator.onLine) {
+      const todos = await deportistaConsultaTodos();
 
- try {
+      const respuesta = await consume(
+        enviaJsonRecibeJson("php/sincroniza.php", todos),
+      );
 
-  if (navigator.onLine) {
-   const todos = await pasatiempoConsultaTodos()
-   const respuesta =
-    await consume(enviaJsonRecibeJson("php/sincroniza.php", todos))
-   const pasatiempos = validaPasatiempos(await respuesta.json())
-   await pasatiemposReemplaza(pasatiempos)
-   renderiza(pasatiempos)
+      const deportistas = validaDeportistas(await respuesta.json());
+
+      await deportistasReemplaza(deportistas);
+
+      renderiza(deportistas);
+    }
+  } catch (error) {
+    muestraError(error);
   }
 
- } catch (error) {
-
-  muestraError(error)
-
- }
-
- esperaUnPocoYSincroniza()
-
+  esperaUnPocoYSincroniza();
 }

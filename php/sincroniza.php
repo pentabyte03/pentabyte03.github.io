@@ -3,57 +3,59 @@
 require_once __DIR__ . "/lib/manejaErrores.php";
 require_once __DIR__ . "/lib/recibeJson.php";
 require_once __DIR__ . "/lib/devuelveJson.php";
-require_once __DIR__ . "/TABLA_PASATIEMPO.php";
-require_once __DIR__ . "/validaPasatiempo.php";
-require_once __DIR__ . "/pasatiempoAgrega.php";
-require_once __DIR__ . "/pasatiempoBusca.php";
-require_once __DIR__ . "/pasatiempoConsultaNoEliminados.php";
-require_once __DIR__ . "/pasatiempoModifica.php";
+require_once __DIR__ . "/TABLA_DEPORTISTA.php";
+require_once __DIR__ . "/validaDeportista.php";
+require_once __DIR__ . "/deportistaAgrega.php";
+require_once __DIR__ . "/deportistaBusca.php";
+require_once __DIR__ . "/deportistaConsultaNoEliminados.php";
+require_once __DIR__ . "/deportistaModifica.php";
 
- $lista = recibeJson();
+$lista = recibeJson();
 
- if (!is_array($lista)) {
-  $lista = [];
- }
+if (!is_array($lista)) {
+ $lista = [];
+}
 
- foreach ($lista as $modelo) {
-  $modeloEnElCliente = validaPasatiempo($modelo);
-  $modeloEnElServidor = pasatiempoBusca($modeloEnElCliente[PAS_ID]);
+foreach ($lista as $modelo) {
 
-  if ($modeloEnElServidor === false) {
+ $modeloEnElCliente = validaDeportista($modelo);
+ $modeloEnElServidor = deportistaBusca($modeloEnElCliente[DEP_ID]);
 
-   /* CONFLICTO: El modelo no ha estado en el servidor.
-    * AGREGARLO solamente si no está eliminado. */
-   if ($modeloEnElCliente[PAS_ELIMINADO] === 0) {
-    pasatiempoAgrega($modeloEnElCliente);
-   }
-  } elseif (
-   $modeloEnElServidor[PAS_ELIMINADO] === 0
-   && $modeloEnElCliente[PAS_ELIMINADO] === 1
-  ) {
+ if ($modeloEnElServidor === false) {
 
-   /* CONFLICTO: El registro está en el servidor, donde no se ha eliminado, pero
-    * ha sido eliminado en el cliente.
-    * Gana el cliente, porque optamos por no revivir lo eliminado. */
-   pasatiempoModifica($modeloEnElCliente);
-  } else if (
-   $modeloEnElCliente[PAS_ELIMINADO] === 0
-   && $modeloEnElServidor[PAS_ELIMINADO] === 0
-  ) {
-
-   /* CONFLICTO: Registros en el servidor y en el cliente. Pueden ser
-    * diferentes.
-    * GANA FECHA MÁS GRANDE. Cuando gana el servidor, no se hace nada. */
-   if (
-    $modeloEnElCliente[PAS_MODIFICACION] >
-    $modeloEnElServidor[PAS_MODIFICACION]
-   ) {
-    // La versión del cliente es más nueva y prevalece.
-    pasatiempoModifica($modeloEnElCliente);
-   }
+  /* CONFLICTO: El modelo no ha estado en el servidor.
+   * AGREGARLO solamente si no está eliminado. */
+  if ($modeloEnElCliente[DEP_ELIMINADO] === 0) {
+   deportistaAgrega($modeloEnElCliente);
   }
+
+ } elseif (
+  $modeloEnElServidor[DEP_ELIMINADO] === 0
+  && $modeloEnElCliente[DEP_ELIMINADO] === 1
+ ) {
+
+  /* CONFLICTO: El registro está en el servidor, donde no se ha eliminado,
+   * pero ha sido eliminado en el cliente.
+   * Gana el cliente. */
+  deportistaModifica($modeloEnElCliente);
+
+ } else if (
+  $modeloEnElCliente[DEP_ELIMINADO] === 0
+  && $modeloEnElServidor[DEP_ELIMINADO] === 0
+ ) {
+
+  /* CONFLICTO: Registros en servidor y cliente.
+   * GANA EL DE MAYOR FECHA. */
+  if (
+   $modeloEnElCliente[DEP_MODIFICACION] >
+   $modeloEnElServidor[DEP_MODIFICACION]
+  ) {
+   deportistaModifica($modeloEnElCliente);
+  }
+
  }
+}
 
- $lista = pasatiempoConsultaNoEliminados();
+$lista = deportistaConsultaNoEliminados();
 
- devuelveJson($lista);
+devuelveJson($lista);
